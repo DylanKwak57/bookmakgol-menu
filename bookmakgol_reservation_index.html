@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">북막골 예약 | Bookmakgol Reservation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom, #b0b0b0 0%, #9a9a9a 100%);
+            color: #2d2d2d;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #2d2d2d;
+            margin-bottom: 20px;
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .lang-btn {
+            background: #4a4a4a;
+            border: 2px solid #4a4a4a;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: white;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: #3a3a3a;
+        }
+
+        .lang-btn.active {
+            background: #2d2d2d;
+            color: white;
+            border-color: #2d2d2d;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #2d2d2d;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #c8c8c8;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .section-number {
+            background: #4a4a4a;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #3a3a3a;
+        }
+
+        .required {
+            color: #c17a7a;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d0d0d0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            color: #2d2d2d;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4a4a4a;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 날짜/시간 입력 필드 스타일 */
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.5);
+            cursor: pointer;
+        }
+
+        input[type="date"]::-webkit-datetime-edit,
+        input[type="time"]::-webkit-datetime-edit {
+            color: #2d2d2d;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+        input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+            color: #2d2d2d;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .branch-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .branch-card {
+            border: 2px solid #d0d0d0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            color: #2d2d2d;
+        }
+
+        .branch-card:hover {
+            border-color: #4a4a4a;
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .branch-card.selected {
+            border-color: #2d2d2d;
+            background: #4a4a4a;
+            color: white;
+        }
+
+        .branch-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .branch-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .space-options {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .space-options.show {
+            display: block;
+        }
+
+        .space-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .space-btn {
+            padding: 10px;
+            border: 2px solid #e8e2d8;
+            background: #fafafa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: #2d2d2d;
+        }
+
+        .space-btn.selected {
+            border-color: #2d2d2d;
+            background: #4a4a4a;
+            color: white;
+        }
+
+        .room-details, .floor-details {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .room-details.show, .floor-details.show {
+            display: block;
+        }
+
+        .room-cards, .floor-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-card {
+            border: 2px solid #e8e2d8;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            color: #2d2d2d;
+        }
+
+        .detail-card.selected {
+            border-color: #2d2d2d;
+            background: #4a4a4a;
+            color: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #4a4a4a;
+            color: white;
+            border: 2px solid #4a4a4a;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #3a3a3a;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #8b4513;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+            display: none;
+            line-height: 1.6;
+            white-space: pre-line;
+            font-size: 0.95rem;
+        }
+
+        .success {
+            background: linear-gradient(135deg, #d4edda 0%, #c8e6c9 100%);
+            border: 2px solid #28a745;
+            color: #155724;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .success h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .success ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        
+        .success li {
+            padding: 3px 0;
+            border-left: 3px solid #28a745;
+            padding-left: 10px;
+            margin: 5px 0;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .time-slot {
+            padding: 8px 4px;
+            border: 2px solid #e8e2d8;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            background: #fafafa;
+        }
+
+        .time-slot:hover {
+            border-color: #4a4a4a;
+            background: white;
+        }
+
+        .time-slot.selected {
+            border-color: #2d2d2d;
+            background: #4a4a4a;
+            color: white;
+        }
+
+        .time-slot.unavailable {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .branch-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 예약금 섹션 스타일 */
+        .deposit-info {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
+            border: 2px solid #ffb84d;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .deposit-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .bank-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bank-info h4 {
+            margin-bottom: 10px;
+            color: #2d2d2d;
+        }
+
+        .bank-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bank-info li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .bank-info li:last-child {
+            border-bottom: none;
+        }
+
+        .usage-time-info {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 2px dashed #d0d0d0;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+        }
+
+        input[type="file"]:hover {
+            border-color: #4a4a4a;
+            background: white;
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* 예약 가능/불가 모달 */
+        .availability-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .availability-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2d2d2d;
+        }
+
+        .modal-message {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #4a4a4a;
+            white-space: pre-line;
+        }
+
+        .modal-btn {
+            background: #4a4a4a;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-btn:hover {
+            background: #3a3a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-btn.success {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+        }
+
+        .modal-btn.success:hover {
+            background: linear-gradient(135deg, #40c057, #37b24d);
+        }
+
+        .modal-btn.error {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .modal-btn.error:hover {
+            background: linear-gradient(135deg, #ee5a52, #e03131);
+        }
+
+        #modalButtons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        #modalButtons .modal-btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .modal-btn.secondary {
+            background: #868e96;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #6c757d;
+        }
+
+        .modal-btn.warning {
+            background: linear-gradient(135deg, #ffa94d, #ff922b);
+        }
+
+        .modal-btn.warning:hover {
+            background: linear-gradient(135deg, #ff922b, #fd7e14);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">북막골</div>
+            <div class="subtitle" id="subtitle">Reservation Service</div>
+            
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="ko">한국어</button>
+                <button class="lang-btn" data-lang="th">ไทย</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="reservationForm">
+                <!-- Step 1: 지점 선택 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-number">1</span>
+                        <span id="step1-title">지점 선택</span>
+                    </h3>
+                    
+                    <div class="branch-cards">
+                        <div class="branch-card" data-branch="Ekamai">
+                            <div class="branch-name" id="ekamai-name">에까마이 지점</div>
+                            <div class="branch-info" id="ekamai-info">BTS 에까마이역 4번 출구</div>
+                        </div>
+                        <div class="branch-card" data-branch="Phrom Phong">
+                            <div class="branch-name" id="phrom-name">프롬퐁 지점</div>
+                            <div class="branch-info" id="phrom-info">수쿰윗 소이 24</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: 날짜 및 시간 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-number">2</span>
+                        <span id="step2-title">날짜 및 시간</span>
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="date" id="date-label">날짜 선택 <span class="required">*</span></label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label id="time-label">시간 선택 <span class="required">*</span></label>
+                        <div class="time-grid" id="timeGrid">
+                            <!-- 시간 슬롯들이 동적으로 생성됩니다 -->
+                        </div>
+                        <input type="hidden" id="selectedTime" name="time">
+                    </div>
+                </div>
+
+                <!-- Step 3: 공간 선택 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-number">3</span>
+                        <span id="step3-title">공간 선택</span>
+                    </h3>
+                    
+                    <div class="space-options" id="spaceOptions">
+                        <div class="space-type-selector">
+                            <div class="space-btn" data-space="룸" id="room-btn">
+                                <div id="room-text">룸 (개별 공간)</div>
+                            </div>
+                            <div class="space-btn" data-space="홀" id="hall-btn">
+                                <div id="hall-text">홀 (일반 테이블)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="room-details" id="roomDetails">
+                            <div class="room-cards">
+                                <div class="detail-card" data-room="1번룸">
+                                    <div id="room1-text">1번룸</div>
+                                    <div id="room1-capacity">최대 16명</div>
+                                </div>
+                                <div class="detail-card" data-room="2번룸">
+                                    <div id="room2-text">2번룸</div>
+                                    <div id="room2-capacity">최대 6명 (에까마이) / 4명 (프롬퐁)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="floor-details" id="floorDetails">
+                            <div class="floor-cards">
+                                <div class="detail-card" data-floor="1층">
+                                    <div id="floor1-text">1층</div>
+                                </div>
+                                <div class="detail-card" data-floor="2층">
+                                    <div id="floor2-text">2층</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: 인원 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-number">4</span>
+                        <span id="step4-title">인원 수</span>
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="guests" id="guests-label">인원 <span class="required">*</span></label>
+                        <input type="number" id="guests" name="guests" min="1" max="20" required>
+                    </div>
+                </div>
+
+                <!-- Step 5: 연락처 정보 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-number">5</span>
+                        <span id="step5-title">연락처 정보</span>
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="name" id="name-label">이름 <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" id="phone-label">전화번호 <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" id="email-label">이메일 <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special-request" id="special-label">특별 요청</label>
+                        <textarea id="special-request" name="specialRequest" rows="3" placeholder=""></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 6: 예약금 영수증 (Room 예약 시만 표시) -->
+                <div class="form-section" id="depositSection" style="display: none;">
+                    <h3 class="section-title">
+                        <span class="section-number">6</span>
+                        <span id="step6-title">예약금 입금 영수증</span>
+                    </h3>
+                    
+                    <div class="deposit-info">
+                        <div id="deposit-amount-display" class="deposit-amount"></div>
+                        
+                        <div class="bank-info">
+                            <h4 id="bank-info-title">🏦 입금 계좌</h4>
+                            <ul id="bank-details">
+                                <li><strong id="bank-name-label">은행:</strong> Kasikorn Bank</li>
+                                <li><strong id="bank-account-label">계좌번호:</strong> 047-3-53876-8</li>
+                                <li><strong id="bank-holder-label">예금주:</strong> Bookmagol (Thailand)<br>
+                                    <span style="font-size: 0.9em;">บุคมาโกล ไทยแลนด์ จำกัด</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="usage-time-info">
+                            <p id="usage-time-text">⏰ <strong>사용 시간:</strong> 3시간</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="receipt" id="receipt-label">
+                            입금 영수증 업로드 <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="file" 
+                            id="receipt" 
+                            name="receipt" 
+                            accept="image/*,.pdf"
+                        >
+                        <small id="receipt-help">
+                            입금 후 영수증 사진을 업로드해주세요. (JPG, PNG, PDF, 최대 5MB)
+                        </small>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">예약하기</button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div id="loading-text">예약을 처리 중입니다...</div>
+            </div>
+
+            <div class="message success" id="successMessage">
+                <div id="success-text">예약이 성공적으로 접수되었습니다!</div>
+                <div id="booking-number"></div>
+            </div>
+
+            <div class="message error" id="errorMessage">
+                <div id="error-text">예약 처리 중 오류가 발생했습니다.</div>
+            </div>
+        </div>
+
+        <!-- 예약 가능/불가 모달 -->
+        <div class="availability-modal" id="availabilityModal">
+            <div class="modal-content">
+                <div class="modal-icon" id="modalIcon"></div>
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <p class="modal-message" id="modalMessage"></p>
+                <div id="modalButtons">
+                    <button class="modal-btn" id="modalBtn"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 다국어 텍스트
+        const translations = {
+            ko: {
+                pageTitle: '북막골 예약 | Bookmakgol Reservation',
+                subtitle: 'Reservation Service',
+                step1Title: '지점 선택',
+                step2Title: '날짜 및 시간',
+                step3Title: '공간 선택',
+                step4Title: '인원 수',
+                step5Title: '연락처 정보',
+                step6Title: '예약금 입금 영수증',
+                ekamaiName: '에까마이 지점',
+                ekamaiInfo: 'BTS 에까마이역 4번 출구',
+                phromName: '프롬퐁 지점',
+                phromInfo: '수쿰윗 소이 24',
+                dateLabel: '날짜 선택',
+                timeLabel: '시간 선택',
+                roomText: '룸 (개별 공간)',
+                hallText: '테이블',
+                room1Text: '1번룸',
+                room1Capacity: '최대 16명',
+                room2Text: '2번룸',
+                room2Capacity: '최대 6명',
+                floor1Text: '1층',
+                floor2Text: '2층',
+                guestsLabel: '인원',
+                nameLabel: '이름',
+                phoneLabel: '전화번호',
+                emailLabel: '이메일',
+                specialLabel: '특별 요청',
+                bankInfoTitle: '🏦 입금 계좌',
+                bankNameLabel: '은행',
+                bankAccountLabel: '계좌번호',
+                bankHolderLabel: '예금주',
+                usageTimeText: '사용 시간: 3시간',
+                receiptLabel: '입금 영수증 업로드',
+                receiptHelp: '입금 후 영수증 사진을 업로드해주세요. (JPG, PNG, PDF, 최대 5MB)',
+                submitBtn: '예약하기',
+                loadingText: '예약을 처리 중입니다...',
+                successText: '예약이 성공적으로 접수되었습니다!',
+                errorText: '예약 처리 중 오류가 발생했습니다.',
+                required: '*'
+            },
+            th: {
+                pageTitle: 'จองโต๊ะ บุกมักกล | Bookmakgol Reservation',
+                subtitle: 'Reservation Service',
+                step1Title: 'เลือกสาขา',
+                step2Title: 'วันที่และเวลา',
+                step3Title: 'เลือกพื้นที่',
+                step4Title: 'จำนวนคน',
+                step5Title: 'ข้อมูลติดต่อ',
+                step6Title: 'สลิปโอนเงินค่ามัดจำ',
+                ekamaiName: 'สาขาเอกมัย',
+                ekamaiInfo: 'BTS เอกมัย ทางออก 4',
+                phromName: 'สาขาพร้อมพงษ์',
+                phromInfo: 'สุขุมวิท ซอย 24',
+                dateLabel: 'เลือกวันที่',
+                timeLabel: 'เลือกเวลา',
+                roomText: 'ห้องส่วนตัว',
+                hallText: 'โซนโต๊ะ',
+                room1Text: 'ห้องที่ 1',
+                room1Capacity: 'สูงสุด 16 คน',
+                room2Text: 'ห้องที่ 2',
+                room2Capacity: 'สูงสุด 6 คน',
+                floor1Text: 'ชั้น 1',
+                floor2Text: 'ชั้น 2',
+                guestsLabel: 'จำนวนคน',
+                nameLabel: 'ชื่อ',
+                phoneLabel: 'เบอร์โทร',
+                emailLabel: 'อีเมล',
+                specialLabel: 'ความต้องการพิเศษ',
+                bankInfoTitle: '🏦 บัญชีธนาคาร',
+                bankNameLabel: 'ธนาคาร',
+                bankAccountLabel: 'เลขที่บัญชี',
+                bankHolderLabel: 'ชื่อบัญชี',
+                usageTimeText: 'ระยะเวลาใช้งาน: 3 ชั่วโมง',
+                receiptLabel: 'อัพโหลดสลิปโอนเงิน',
+                receiptHelp: 'กรุณาอัพโหลดสลิปโอนเงิน (JPG, PNG, PDF, สูงสุด 5MB)',
+                submitBtn: 'จองโต๊ะ',
+                loadingText: 'กำลังดำเนินการจอง...',
+                successText: 'การจองสำเร็จแล้ว!',
+                errorText: 'เกิดข้อผิดพลาดในการจอง',
+                required: '*'
+            },
+            en: {
+                pageTitle: 'Bookmakgol Reservation',
+                subtitle: 'Reservation Service',
+                step1Title: 'Select Branch',
+                step2Title: 'Date & Time',
+                step3Title: 'Select Space',
+                step4Title: 'Party Size',
+                step5Title: 'Contact Information',
+                step6Title: 'Payment Receipt',
+                ekamaiName: 'Ekamai Branch',
+                ekamaiInfo: 'BTS Ekamai Exit 4',
+                phromName: 'Phrom Phong Branch',
+                phromInfo: 'Sukhumvit Soi 24',
+                dateLabel: 'Select Date',
+                timeLabel: 'Select Time',
+                roomText: 'Private Room',
+                hallText: 'Tables',
+                room1Text: 'Room 1',
+                room1Capacity: 'Max 16 guests',
+                room2Text: 'Room 2',
+                room2Capacity: 'Max 6 guests',
+                floor1Text: '1st Floor',
+                floor2Text: '2nd Floor',
+                guestsLabel: 'Guests',
+                nameLabel: 'Name',
+                phoneLabel: 'Phone',
+                emailLabel: 'Email',
+                specialLabel: 'Special Requests',
+                bankInfoTitle: '🏦 Bank Account',
+                bankNameLabel: 'Bank',
+                bankAccountLabel: 'Account Number',
+                bankHolderLabel: 'Account Holder',
+                usageTimeText: 'Duration: 3 hours',
+                receiptLabel: 'Upload Payment Receipt',
+                receiptHelp: 'Please upload payment receipt (JPG, PNG, PDF, max 5MB)',
+                submitBtn: 'Make Reservation',
+                loadingText: 'Processing reservation...',
+                successText: 'Reservation submitted successfully!',
+                errorText: 'Error processing reservation.',
+                required: '*'
+            }
+        };
+
+        // 현재 언어
+        let currentLang = 'ko';
+        let selectedBranch = '';
+        let selectedSpace = '';
+        let selectedDetail = '';
+
+        // 예약금 금액 계산 함수 (지점별)
+        function getDepositAmount(branch, room) {
+            // 룸 번호 정규화 (다국어 지원)
+            const isRoom1 = room === '1번룸' || room === 'Room 1' || room === 'ห้องที่ 1' || room.includes('1');
+            const isRoom2 = room === '2번룸' || room === 'Room 2' || room === 'ห้องที่ 2' || room.includes('2');
+            
+            if (branch === 'Ekamai') {
+                return isRoom1 ? '600' : isRoom2 ? '300' : '600';
+            } else {
+                // Phrom Phong
+                return isRoom1 ? '800' : isRoom2 ? '400' : '800';
+            }
+        }
+
+        // 사용 가능 시간 계산 함수
+        function calculateAvailableHours(startTime, nextBookingTime = null) {
+            const [startHour, startMinute] = startTime.split(':').map(Number);
+            const startMinutes = startHour * 60 + startMinute;
+            
+            // 기본 3시간
+            let endMinutes = startMinutes + 180;
+            
+            // ⚠️ 다음 예약 시간 체크가 제일 먼저!
+            if (nextBookingTime) {
+                const [nextHour, nextMinute] = nextBookingTime.split(':').map(Number);
+                const nextMinutes = nextHour * 60 + nextMinute;
+                if (endMinutes > nextMinutes) {
+                    endMinutes = nextMinutes;
+                }
+            }
+            
+            // 브레이크 타임 체크 (15:00)
+            const breakStartMinutes = 15 * 60;
+            if (startMinutes < breakStartMinutes && endMinutes > breakStartMinutes) {
+                endMinutes = breakStartMinutes;
+            }
+            
+            // 영업 종료 시간 체크 (22:00)
+            const closeMinutes = 22 * 60;
+            if (endMinutes > closeMinutes) {
+                endMinutes = closeMinutes;
+            }
+            
+            // 종료 시간 계산
+            const endHour = Math.floor(endMinutes / 60);
+            const endMinute = endMinutes % 60;
+            const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
+            
+            // 사용 가능 시간 (분 단위)
+            const availableMinutes = endMinutes - startMinutes;
+            const availableHours = availableMinutes / 60;
+            
+            return {
+                endTime,
+                availableHours,
+                availableMinutes,
+                isLimited: availableHours < 3,
+                isTooShort: availableHours < 1  // 1시간 미만만 차단 (정확히 1시간은 OK)
+            };
+        }
+
+        // 모달 표시 함수
+        function showAvailabilityModal(isAvailable, time, room, date, availableInfo, blockedSlots = []) {
+            const modal = document.getElementById('availabilityModal');
+            const icon = document.getElementById('modalIcon');
+            const title = document.getElementById('modalTitle');
+            const message = document.getElementById('modalMessage');
+            const buttonsDiv = document.getElementById('modalButtons');
+            
+            if (isAvailable) {
+                // 예약 가능
+                icon.textContent = availableInfo.isLimited ? '⚠️' : '✅';
+                
+                const titles = {
+                    ko: availableInfo.isLimited ? '예약 가능합니다' : '예약 가능합니다!',
+                    th: availableInfo.isLimited ? 'สามารถจองได้' : 'สามารถจองได้!',
+                    en: availableInfo.isLimited ? 'Available' : 'Available!'
+                };
+                
+                // 사용 가능 시간 텍스트
+                const hoursText = availableInfo.availableHours === Math.floor(availableInfo.availableHours) 
+                    ? availableInfo.availableHours 
+                    : availableInfo.availableHours.toFixed(1);
+                
+                const timeRangeText = `${time}~${availableInfo.endTime}`;
+                
+                let warningText = '';
+                if (availableInfo.isLimited) {
+                    const warningMessages = {
+                        ko: `\n\n⚠️ 사용 시간: ${hoursText}시간\n(일반 사용 시간 3시간보다 짧습니다)`,
+                        th: `\n\n⚠️ เวลาใช้งาน: ${hoursText} ชั่วโมง\n(น้อยกว่าเวลาปกติ 3 ชั่วโมง)`,
+                        en: `\n\n⚠️ Duration: ${hoursText} hours\n(Shorter than standard 3 hours)`
+                    };
+                    warningText = warningMessages[currentLang];
+                }
+                
+                // 예약금 금액 계산
+                const roomEn = room.includes('1') ? 'Room 1' : 'Room 2';
+                const depositAmount = getDepositAmount(selectedBranch, roomEn);
+                
+                const messages = {
+                    ko: `${date}\n${timeRangeText}\n${room}${warningText}\n\n💰 예약금: ${depositAmount} THB\n${availableInfo.isLimited ? '\n계속 진행하시겠습니까?' : '\n아래로 스크롤하여 예약을 완료해주세요.'}`,
+                    th: `${date}\n${timeRangeText}\n${room}${warningText}\n\n💰 ค่ามัดจำ: ${depositAmount} บาท\n${availableInfo.isLimited ? '\nต้องการดำเนินการต่อหรือไม่?' : '\nเลื่อนลงเพื่อดำเนินการจองต่อ'}`,
+                    en: `${date}\n${timeRangeText}\n${room}${warningText}\n\n💰 Deposit: ${depositAmount} THB\n${availableInfo.isLimited ? '\nDo you want to continue?' : '\nScroll down to complete your reservation.'}`
+                };
+                
+                title.textContent = titles[currentLang];
+                message.textContent = messages[currentLang];
+                
+                // 버튼 설정
+                buttonsDiv.innerHTML = '';
+                
+                if (availableInfo.isLimited) {
+                    // 제한 시간: 2개 버튼
+                    const changeBtn = document.createElement('button');
+                    changeBtn.className = 'modal-btn secondary';
+                    changeBtn.id = 'modalChangeBtn';
+                    const changeBtnTexts = {
+                        ko: '시간 변경',
+                        th: 'เปลี่ยนเวลา',
+                        en: 'Change Time'
+                    };
+                    changeBtn.textContent = changeBtnTexts[currentLang];
+                    
+                    const continueBtn = document.createElement('button');
+                    continueBtn.className = 'modal-btn warning';
+                    continueBtn.id = 'modalContinueBtn';
+                    const continueBtnTexts = {
+                        ko: '계속하기',
+                        th: 'ดำเนินการต่อ',
+                        en: 'Continue'
+                    };
+                    continueBtn.textContent = continueBtnTexts[currentLang];
+                    
+                    buttonsDiv.appendChild(changeBtn);
+                    buttonsDiv.appendChild(continueBtn);
+                } else {
+                    // 정상: 1개 버튼
+                    const okBtn = document.createElement('button');
+                    okBtn.className = 'modal-btn success';
+                    okBtn.id = 'modalOkBtn';
+                    const okBtnTexts = {
+                        ko: '계속하기',
+                        th: 'ดำเนินการต่อ',
+                        en: 'Continue'
+                    };
+                    okBtn.textContent = okBtnTexts[currentLang];
+                    
+                    buttonsDiv.appendChild(okBtn);
+                }
+                
+            } else {
+                // 예약 불가
+                icon.textContent = '❌';
+                
+                const titles = {
+                    ko: '죄송합니다',
+                    th: 'ขออภัยค่ะ',
+                    en: 'Sorry'
+                };
+                
+                // 블록된 시간 목록 생성
+                let blockedTimesText = '';
+                if (blockedSlots && blockedSlots.length > 0) {
+                    const blockedTimesLabels = {
+                        ko: '\n\n🚫 예약 불가 시간:\n',
+                        th: '\n\n🚫 เวลาที่ไม่สามารถจองได้:\n',
+                        en: '\n\n🚫 Unavailable times:\n'
+                    };
+                    blockedTimesText = blockedTimesLabels[currentLang] + blockedSlots.join(', ');
+                }
+                
+                const messages = {
+                    ko: `선택하신 시간 (${time})은\n이미 예약되어 있습니다.${blockedTimesText}\n\n다른 시간을 선택해주세요.`,
+                    th: `เวลาที่เลือก (${time})\nถูกจองแล้ว${blockedTimesText}\n\nกรุณาเลือกเวลาอื่น`,
+                    en: `The selected time (${time})\nis already booked.${blockedTimesText}\n\nPlease choose another time.`
+                };
+                
+                title.textContent = titles[currentLang];
+                message.textContent = messages[currentLang];
+                
+                // 버튼 설정
+                buttonsDiv.innerHTML = '';
+                const backBtn = document.createElement('button');
+                backBtn.className = 'modal-btn error';
+                backBtn.id = 'modalBackBtn';
+                const backBtnTexts = {
+                    ko: '시간 다시 선택',
+                    th: 'เลือกเวลาใหม่',
+                    en: 'Choose Another Time'
+                };
+                backBtn.textContent = backBtnTexts[currentLang];
+                
+                buttonsDiv.appendChild(backBtn);
+            }
+            
+            modal.classList.add('show');
+        }
+
+        // 모달 닫기 및 버튼 이벤트
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('availabilityModal');
+            
+            // 배경 클릭 시 닫기
+            if (e.target.id === 'availabilityModal') {
+                modal.classList.remove('show');
+            }
+            
+            // OK 버튼 (정상 예약)
+            if (e.target.id === 'modalOkBtn') {
+                modal.classList.remove('show');
+            }
+            
+            // 계속하기 버튼 (제한 시간 예약)
+            if (e.target.id === 'modalContinueBtn') {
+                modal.classList.remove('show');
+                // 선택한 시간 유지 (UI에서 하이라이트)
+                const selectedTime = document.getElementById('selectedTime').value;
+                if (selectedTime) {
+                    const timeSlots = document.querySelectorAll('.time-slot');
+                    timeSlots.forEach(slot => {
+                        if (slot.dataset.time === selectedTime) {
+                            slot.classList.add('selected');
+                        }
+                    });
+                }
+            }
+            
+            // 시간 변경 버튼
+            if (e.target.id === 'modalChangeBtn') {
+                modal.classList.remove('show');
+                // 시간 선택으로 스크롤
+                document.getElementById('timeGrid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            // 시간 다시 선택 버튼 (예약 불가)
+            if (e.target.id === 'modalBackBtn') {
+                modal.classList.remove('show');
+                // 시간 선택으로 스크롤
+                document.getElementById('timeGrid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // 언어 변경
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+            generateTimeSlots();
+            
+            // 언어 버튼 이벤트
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentLang = this.dataset.lang;
+                    updateLanguage();
+                });
+            });
+
+            // 지점 선택 이벤트
+            document.querySelectorAll('.branch-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.branch-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedBranch = this.dataset.branch;
+                    
+                    // 지점별 subtitle 동적 변경
+                    const subtitle = document.getElementById('subtitle');
+                    if (selectedBranch === 'Ekamai') {
+                        subtitle.textContent = 'Bookmakgol Fusion Branch';
+                    } else if (selectedBranch === 'Phrom Phong') {
+                        subtitle.textContent = 'Bookmakgol Gourmet Branch';
+                    }
+                    
+                    document.getElementById('spaceOptions').classList.add('show');
+                    updateRoom2Capacity();
+                });
+            });
+
+            // 공간 유형 선택 이벤트
+            document.querySelectorAll('.space-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.space-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSpace = this.dataset.space;
+                    
+                    if (selectedSpace === '룸') {
+                        document.getElementById('roomDetails').classList.add('show');
+                        document.getElementById('floorDetails').classList.remove('show');
+                        // 예약금 섹션은 룸 선택 시에만 표시 (룸 번호 선택 후)
+                    } else {
+                        // 홀 선택 시 층 선택 없이 바로 완료
+                        selectedDetail = 'General Table';
+                        document.getElementById('floorDetails').classList.remove('show');
+                        document.getElementById('roomDetails').classList.remove('show');
+                        // 예약금 섹션 숨김
+                        document.getElementById('depositSection').style.display = 'none';
+                        document.getElementById('receipt').removeAttribute('required');
+                    }
+                });
+            });
+
+            // 룸 선택 이벤트
+            document.querySelectorAll('[data-room]').forEach(card => {
+                card.addEventListener('click', async function() {
+                    document.querySelectorAll('[data-room]').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedDetail = this.dataset.room;
+                    
+                    // 날짜와 시간이 선택되었는지 확인
+                    const selectedDate = document.getElementById('date').value;
+                    const selectedTime = document.getElementById('selectedTime').value;
+                    
+                    if (!selectedDate || !selectedTime) {
+                        const alertMessages = {
+                            ko: '먼저 날짜와 시간을 선택해주세요!',
+                            th: 'กรุณาเลือกวันที่และเวลาก่อน!',
+                            en: 'Please select date and time first!'
+                        };
+                        alert(alertMessages[currentLang]);
+                        
+                        // 룸 선택 취소
+                        this.classList.remove('selected');
+                        selectedDetail = '';
+                        
+                        // 날짜 선택으로 스크롤
+                        document.getElementById('date').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                    }
+                    
+                    // 예약 가능 여부 체크
+                    const roomEn = selectedDetail === '1번룸' ? 'Room 1' : 
+                                  selectedDetail === '2번룸' ? 'Room 2' : selectedDetail;
+                    
+                    try {
+                        const response = await fetch(
+                            `https://dylan-automation.app.n8n.cloud/webhook/check-availability?` + 
+                            `date=${selectedDate}&branch=${selectedBranch}&room=${encodeURIComponent(roomEn)}`
+                        );
+                        
+                        const data = await response.json();
+                        
+                        // 시간 그리드 업데이트 (블록된 시간 표시)
+                        generateTimeSlots(data.blockedSlots || []);
+                        
+                        // 선택된 시간 복원
+                        if (selectedTime) {
+                            const timeSlots = document.querySelectorAll('.time-slot');
+                            timeSlots.forEach(slot => {
+                                if (slot.dataset.time === selectedTime && !slot.classList.contains('unavailable')) {
+                                    slot.classList.add('selected');
+                                }
+                            });
+                        }
+                        
+                        // 다음 예약 시간 찾기 (선택한 시간 이후 첫 번째 예약)
+                        let nextBookingTime = null;
+                        if (data.bookedTimes && data.bookedTimes.length > 0) {
+                            const [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
+                            const selectedMinutes = selectedHour * 60 + selectedMinute;
+                            
+                            for (const bookedTime of data.bookedTimes) {
+                                const [bookedHour, bookedMinute] = bookedTime.split(':').map(Number);
+                                const bookedMinutes = bookedHour * 60 + bookedMinute;
+                                
+                                if (bookedMinutes > selectedMinutes) {
+                                    nextBookingTime = bookedTime;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // 사용 가능 시간 계산
+                        const availableInfo = calculateAvailableHours(selectedTime, nextBookingTime);
+                        
+                        // 날짜 포맷팅
+                        const dateObj = new Date(selectedDate);
+                        const formattedDate = dateObj.toLocaleDateString(currentLang === 'ko' ? 'ko-KR' : currentLang === 'th' ? 'th-TH' : 'en-US', 
+                            {year: 'numeric', month: 'long', day: 'numeric'});
+                        
+                        // 룸명 다국어
+                        const roomNames = {
+                            'Room 1': {ko: '1번룸', th: 'ห้องที่ 1', en: 'Room 1'},
+                            'Room 2': {ko: '2번룸', th: 'ห้องที่ 2', en: 'Room 2'}
+                        };
+                        const roomName = roomNames[roomEn][currentLang];
+                        
+                        // 선택한 시간이 블록되었는지 확인
+                        if (data.blockedSlots && data.blockedSlots.includes(selectedTime)) {
+                            // 예약 불가!
+                            showAvailabilityModal(false, selectedTime, roomName, formattedDate, null, data.blockedSlots);
+                            
+                            // 룸 선택 취소 (시간 선택은 유지!)
+                            this.classList.remove('selected');
+                            selectedDetail = '';
+                            
+                            // 예약금 섹션 숨김
+                            document.getElementById('depositSection').style.display = 'none';
+                            document.getElementById('receipt').removeAttribute('required');
+                            
+                            // 시간 선택은 유지 (UI 복원)
+                            const timeSlots = document.querySelectorAll('.time-slot');
+                            timeSlots.forEach(slot => {
+                                if (slot.dataset.time === selectedTime) {
+                                    slot.classList.add('selected');
+                                }
+                            });
+                            
+                            return;
+                        }
+                        
+                        // 1시간 미만 체크 (완전 차단)
+                        if (availableInfo.isTooShort) {
+                            const tooShortTitles = {
+                                ko: '예약 불가',
+                                th: 'ไม่สามารถจองได้',
+                                en: 'Not Available'
+                            };
+                            
+                            const tooShortMessages = {
+                                ko: `선택하신 시간 (${selectedTime})은\n사용 가능 시간이 ${availableInfo.availableHours.toFixed(1)}시간으로\n최소 예약 시간 1시간 미만입니다.\n\n다른 시간을 선택해주세요.`,
+                                th: `เวลาที่เลือก (${selectedTime})\nมีเวลาใช้งาน ${availableInfo.availableHours.toFixed(1)} ชั่วโมง\nน้อยกว่าเวลาจองขั้นต่ำ 1 ชั่วโมง\n\nกรุณาเลือกเวลาอื่น`,
+                                en: `The selected time (${selectedTime})\nhas only ${availableInfo.availableHours.toFixed(1)} hours available\nwhich is less than the minimum 1 hour.\n\nPlease choose another time.`
+                            };
+                            
+                            // 커스텀 에러 모달
+                            const modal = document.getElementById('availabilityModal');
+                            const icon = document.getElementById('modalIcon');
+                            const title = document.getElementById('modalTitle');
+                            const message = document.getElementById('modalMessage');
+                            const buttonsDiv = document.getElementById('modalButtons');
+                            
+                            icon.textContent = '❌';
+                            title.textContent = tooShortTitles[currentLang];
+                            message.textContent = tooShortMessages[currentLang];
+                            
+                            buttonsDiv.innerHTML = '';
+                            const backBtn = document.createElement('button');
+                            backBtn.className = 'modal-btn error';
+                            backBtn.id = 'modalBackBtn';
+                            const backBtnTexts = {
+                                ko: '시간 다시 선택',
+                                th: 'เลือกเวลาใหม่',
+                                en: 'Choose Another Time'
+                            };
+                            backBtn.textContent = backBtnTexts[currentLang];
+                            buttonsDiv.appendChild(backBtn);
+                            
+                            modal.classList.add('show');
+                            
+                            // 룸 선택 취소
+                            this.classList.remove('selected');
+                            selectedDetail = '';
+                            
+                            // 예약금 섹션 숨김
+                            document.getElementById('depositSection').style.display = 'none';
+                            document.getElementById('receipt').removeAttribute('required');
+                            
+                            return;
+                        }
+                        
+                        // 제한 시간 체크 (1시간 초과 ~ 3시간 미만)
+                        if (availableInfo.isLimited && !availableInfo.isTooShort) {
+                            // 제한 시간 경고!
+                            showAvailabilityModal('limited', selectedTime, roomName, formattedDate, availableInfo, []);
+                            
+                            // 예약금 섹션 표시 (계속 예약 가능)
+                            const depositSection = document.getElementById('depositSection');
+                            depositSection.style.display = 'block';
+                            document.getElementById('receipt').setAttribute('required', 'required');
+                            
+                            return;
+                        }
+                        
+                        // 예약 가능!
+                        showAvailabilityModal(true, selectedTime, roomName, formattedDate, availableInfo, []);
+                        
+                    } catch (error) {
+                        // 에러 발생 시 기본 시간 슬롯 표시
+                    }
+                    
+                    // 예약금 섹션 표시
+                    const depositSection = document.getElementById('depositSection');
+                    depositSection.style.display = 'block';
+                    document.getElementById('receipt').setAttribute('required', 'required');
+                    
+                    // 예약금 금액 표시 (지점별)
+                    const amount = getDepositAmount(selectedBranch, selectedDetail);
+                    const depositDisplay = document.getElementById('deposit-amount-display');
+                    
+                    const amountText = {
+                        ko: `💰 예약금: ${amount} THB (입금 후 예약 가능)`,
+                        th: `💰 ค่ามัดจำ: ${amount} บาท (จองได้หลังชำระ)`,
+                        en: `💰 Deposit: ${amount} THB (Required before booking)`
+                    };
+                    
+                    depositDisplay.textContent = amountText[currentLang];
+                    
+                    // 예약 가능 시간 체크 (날짜 선택되어 있을 경우)
+                    await checkAndUpdateAvailability();
+                });
+            });
+
+            // 층 선택 이벤트 제거 (더 이상 사용 안 함)
+
+            // 시간 선택 이벤트
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('time-slot') && !e.target.classList.contains('unavailable')) {
+                    document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    document.getElementById('selectedTime').value = e.target.dataset.time;
+                }
+            });
+
+            // 날짜 변경 시 시간 슬롯 업데이트
+            document.getElementById('date').addEventListener('change', async function() {
+                await checkAndUpdateAvailability();
+            });
+
+            // 폼 제출 이벤트
+            document.getElementById('reservationForm').addEventListener('submit', handleFormSubmit);
+        });
+
+        // 예약 가능 시간 체크 및 업데이트
+        async function checkAndUpdateAvailability() {
+            const selectedDate = document.getElementById('date').value;
+            
+            if (!selectedDate || !selectedBranch || !selectedDetail) {
+                generateTimeSlots();
+                return;
+            }
+            
+            // Room 예약만 체크 (Table은 체크 안 함)
+            if (selectedSpace !== '룸') {
+                generateTimeSlots();
+                return;
+            }
+            
+            // Room Number 영어로 변환
+            const roomEn = selectedDetail === '1번룸' ? 'Room 1' : 
+                          selectedDetail === '2번룸' ? 'Room 2' : selectedDetail;
+            
+            try {
+                const response = await fetch(
+                    `https://dylan-automation.app.n8n.cloud/webhook/check-availability?` + 
+                    `date=${selectedDate}&branch=${selectedBranch}&room=${encodeURIComponent(roomEn)}`
+                );
+                
+                const data = await response.json();
+                
+                // 예약된 시간 슬롯으로 업데이트
+                generateTimeSlots(data.blockedSlots || []);
+                
+                // 선택된 시간 복원
+                const selectedTime = document.getElementById('selectedTime').value;
+                if (selectedTime) {
+                    const timeSlots = document.querySelectorAll('.time-slot');
+                    timeSlots.forEach(slot => {
+                        if (slot.dataset.time === selectedTime && !slot.classList.contains('unavailable')) {
+                            slot.classList.add('selected');
+                        }
+                    });
+                }
+            } catch (error) {
+                // 에러 시 기본 시간 슬롯 표시
+                generateTimeSlots();
+                
+                // 선택된 시간 복원
+                const selectedTime = document.getElementById('selectedTime').value;
+                if (selectedTime) {
+                    const timeSlots = document.querySelectorAll('.time-slot');
+                    timeSlots.forEach(slot => {
+                        if (slot.dataset.time === selectedTime && !slot.classList.contains('unavailable')) {
+                            slot.classList.add('selected');
+                        }
+                    });
+                }
+            }
+        }
+
+        function generateTimeSlots(blockedSlots = []) {
+            const timeGrid = document.getElementById('timeGrid');
+            timeGrid.innerHTML = '';
+            
+            // 영업시간: 11:00-15:00, 16:00-22:00
+            const morningSlots = [];
+            const eveningSlots = [];
+            
+            // 오전 슬롯 (11:00-15:00, 14:30 제외)
+            for (let hour = 11; hour < 15; hour++) {
+                for (let min = 0; min < 60; min += 30) {
+                    const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+                    // 14:30 제외
+                    if (time !== '14:30') {
+                        morningSlots.push(time);
+                    }
+                }
+            }
+            
+            // 저녁 슬롯 (16:00-22:00, 21:30 제외)
+            for (let hour = 16; hour < 22; hour++) {
+                for (let min = 0; min < 60; min += 30) {
+                    const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+                    // 21:30 제외
+                    if (time !== '21:30') {
+                        eveningSlots.push(time);
+                    }
+                }
+            }
+            
+            [...morningSlots, ...eveningSlots].forEach(time => {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                
+                // 예약된 시간인지 체크
+                if (blockedSlots.includes(time)) {
+                    slot.classList.add('unavailable');
+                    slot.textContent = time + ' ❌';
+                    slot.title = '예약 불가 (이미 예약됨)';
+                } else {
+                    slot.textContent = time;
+                }
+                
+                slot.dataset.time = time;
+                timeGrid.appendChild(slot);
+            });
+        }
+
+        function initializeForm() {
+            // 최소 날짜를 오늘로 동적 설정
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+        }
+
+        function updateLanguage() {
+            const t = translations[currentLang];
+            
+            document.title = t.pageTitle;
+            document.getElementById('page-title').textContent = t.pageTitle;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            
+            document.getElementById('step1-title').textContent = t.step1Title;
+            document.getElementById('step2-title').textContent = t.step2Title;
+            document.getElementById('step3-title').textContent = t.step3Title;
+            document.getElementById('step4-title').textContent = t.step4Title;
+            document.getElementById('step5-title').textContent = t.step5Title;
+            if (document.getElementById('step6-title')) {
+                document.getElementById('step6-title').textContent = t.step6Title;
+            }
+            
+            document.getElementById('ekamai-name').textContent = t.ekamaiName;
+            document.getElementById('ekamai-info').textContent = t.ekamaiInfo;
+            document.getElementById('phrom-name').textContent = t.phromName;
+            document.getElementById('phrom-info').textContent = t.phromInfo;
+            
+            document.getElementById('date-label').innerHTML = t.dateLabel + ' <span class="required">' + t.required + '</span>';
+            document.getElementById('time-label').innerHTML = t.timeLabel + ' <span class="required">' + t.required + '</span>';
+            
+            document.getElementById('room-text').textContent = t.roomText;
+            document.getElementById('hall-text').textContent = t.hallText;
+            document.getElementById('room1-text').textContent = t.room1Text;
+            document.getElementById('room1-capacity').textContent = t.room1Capacity;
+            document.getElementById('room2-text').textContent = t.room2Text;
+            updateRoom2Capacity();
+            document.getElementById('floor1-text').textContent = t.floor1Text;
+            document.getElementById('floor2-text').textContent = t.floor2Text;
+            
+            document.getElementById('guests-label').innerHTML = t.guestsLabel + ' <span class="required">' + t.required + '</span>';
+            document.getElementById('name-label').innerHTML = t.nameLabel + ' <span class="required">' + t.required + '</span>';
+            document.getElementById('phone-label').innerHTML = t.phoneLabel + ' <span class="required">' + t.required + '</span>';
+            document.getElementById('email-label').innerHTML = t.emailLabel + ' <span class="required">' + t.required + '</span>';
+            document.getElementById('special-label').textContent = t.specialLabel;
+            
+            // 예약금 관련 텍스트 업데이트
+            if (document.getElementById('bank-info-title')) {
+                document.getElementById('bank-info-title').textContent = t.bankInfoTitle;
+                document.getElementById('bank-name-label').textContent = t.bankNameLabel + ':';
+                document.getElementById('bank-account-label').textContent = t.bankAccountLabel + ':';
+                document.getElementById('bank-holder-label').textContent = t.bankHolderLabel + ':';
+                document.getElementById('usage-time-text').innerHTML = `⏰ <strong>${t.usageTimeText}</strong>`;
+                document.getElementById('receipt-label').innerHTML = t.receiptLabel + ' <span class="required">' + t.required + '</span>';
+                document.getElementById('receipt-help').textContent = t.receiptHelp;
+            }
+            
+            document.getElementById('submitBtn').textContent = t.submitBtn;
+            document.getElementById('loading-text').textContent = t.loadingText;
+            document.getElementById('success-text').textContent = t.successText;
+            document.getElementById('error-text').textContent = t.errorText;
+        }
+
+        function updateRoom2Capacity() {
+            if (selectedBranch && document.getElementById('room2-capacity')) {
+                const capacityByBranch = {
+                    'Ekamai': {
+                        ko: '최대 6명',
+                        th: 'สูงสุด 6 คน', 
+                        en: 'Max 6 guests'
+                    },
+                    'Phrom Phong': {
+                        ko: '최대 4명',
+                        th: 'สูงสุด 4 คน',
+                        en: 'Max 4 guests'
+                    }
+                };
+                
+                const capacity = capacityByBranch[selectedBranch][currentLang];
+                document.getElementById('room2-capacity').textContent = capacity;
+            }
+        }
+
+        // 종료 시간 계산 (3시간 후)
+        function calculateEndTime(startTime) {
+            const [hour, minute] = startTime.split(':').map(Number);
+            const endHour = (hour + 3) % 24;
+            return `${endHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // 유효성 검사
+            if (!selectedBranch) {
+                alert(currentLang === 'ko' ? '지점을 선택해주세요.' : 
+                      currentLang === 'th' ? 'กรุณาเลือกสาขา' : 'Please select a branch.');
+                return;
+            }
+            
+            if (!selectedSpace) {
+                alert(currentLang === 'ko' ? '공간 유형을 선택해주세요.' : 
+                      currentLang === 'th' ? 'กรุณาเลือกประเภทพื้นที่' : 'Please select space type.');
+                return;
+            }
+            
+            if (!selectedDetail && selectedSpace === '룸') {
+                alert(currentLang === 'ko' ? '룸을 선택해주세요.' : 
+                      currentLang === 'th' ? 'กรุณาเลือกห้อง' : 'Please select a room.');
+                return;
+            }
+            
+            // Room 예약 시 영수증 필수 검증
+            if (selectedSpace === '룸') {
+                const receiptFile = document.getElementById('receipt').files[0];
+                if (!receiptFile) {
+                    alert(currentLang === 'ko' ? '영수증을 업로드해주세요.' : 
+                          currentLang === 'th' ? 'กรุณาอัพโหลดสลิปโอนเงิน' : 
+                          'Please upload payment receipt.');
+                    return;
+                }
+                
+                // 파일 크기 체크 (5MB)
+                if (receiptFile.size > 5 * 1024 * 1024) {
+                    alert(currentLang === 'ko' ? '파일 크기는 5MB 이하여야 합니다.' : 
+                          currentLang === 'th' ? 'ขนาดไฟล์ต้องไม่เกิน 5MB' : 
+                          'File size must be under 5MB.');
+                    return;
+                }
+            }
+            
+            // 홀 선택 시 층 선택 불필요 (자동으로 General Table 설정됨)
+            
+            if (!document.getElementById('selectedTime').value) {
+                alert(currentLang === 'ko' ? '시간을 선택해주세요.' : 
+                      currentLang === 'th' ? 'กรุณาเลือกเวลา' : 'Please select a time.');
+                return;
+            }
+            
+            // 로딩 표시 및 메시지 초기화
+            document.getElementById('reservationForm').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';  // 이전 에러 메시지 숨김
+            document.getElementById('successMessage').style.display = 'none';  // 이전 성공 메시지 숨김
+            
+            // 다국어 → 영어 변환
+            const spaceTypeEn = selectedSpace === '룸' ? 'Room' : 
+                               selectedSpace === '홀' ? 'Table' :
+                               selectedSpace === 'ห้องส่วนตัว' ? 'Room' :
+                               selectedSpace === 'โซนโต๊ะ' ? 'Table' :
+                               selectedSpace === 'Private Room' ? 'Room' :
+                               selectedSpace === 'Hall Tables' ? 'Table' : selectedSpace;
+                               
+            const spaceDetailEn = selectedDetail === '1번룸' ? 'Room 1' : 
+                                 selectedDetail === '2번룸' ? 'Room 2' :
+                                 selectedDetail === '1층' ? '1st Floor' :
+                                 selectedDetail === '2층' ? '2nd Floor' :
+                                 selectedDetail === 'ห้องที่ 1' ? 'Room 1' :
+                                 selectedDetail === 'ห้องที่ 2' ? 'Room 2' :
+                                 selectedDetail === 'ชั้น 1' ? '1st Floor' :
+                                 selectedDetail === 'ชั้น 2' ? '2nd Floor' :
+                                 selectedDetail === 'Room 1' ? 'Room 1' :
+                                 selectedDetail === 'Room 2' ? 'Room 2' :
+                                 selectedDetail === '1st Floor' ? '1st Floor' :
+                                 selectedDetail === '2nd Floor' ? '2nd Floor' :
+                                 selectedDetail === 'General Table' ? 'General Table' : selectedDetail;
+            
+            // 예약 데이터 수집
+            const reservationData = {
+                branch: selectedBranch || 'Ekamai',
+                date: document.getElementById('date').value,
+                time: document.getElementById('selectedTime').value || '18:00',
+                spaceType: spaceTypeEn || 'Room',
+                spaceDetail: spaceDetailEn || 'Room 1',
+                guests: document.getElementById('guests').value,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                specialRequest: document.getElementById('special-request').value,
+                language: currentLang
+            };
+            
+            // Room 예약 시 영수증 파일을 Base64로 변환
+            if (selectedSpace === '룸') {
+                const receiptFile = document.getElementById('receipt').files[0];
+                const depositAmount = getDepositAmount(selectedBranch, selectedDetail);
+                reservationData.depositAmount = depositAmount;
+                
+                // FileReader로 Base64 변환
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    const base64Data = e.target.result.split(',')[1]; // "data:image/jpeg;base64," 제거
+                    
+                    reservationData.receiptBase64 = base64Data;
+                    reservationData.receiptFileName = receiptFile.name;
+                    reservationData.receiptMimeType = receiptFile.type;
+                    
+                    // n8n에 전송
+                    await sendReservation(reservationData);
+                };
+                
+                reader.readAsDataURL(receiptFile);
+                return; // Base64 변환 완료 후 sendReservation에서 처리
+            }
+            
+            // Table 예약은 바로 전송
+            await sendReservation(reservationData);
+        }
+        
+        // 예약 전송 함수
+        async function sendReservation(reservationData) {
+            try {
+                // 로딩 시작, 에러 메시지만 숨김
+                document.getElementById('loading').style.display = 'flex';
+                document.getElementById('errorMessage').style.display = 'none';  // 에러 메시지만 초기화
+                
+                // n8n webhook URL 연결
+                const response = await fetch('https://dylan-automation.app.n8n.cloud/webhook/bookmakgol-reservation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(reservationData)
+                });
+                
+                // n8n 응답 처리
+                let result = {};
+                const responseText = await response.text();
+                
+                // 응답 본문이 비어있으면 에러 처리
+                if (!responseText || responseText.trim() === '') {
+                    throw new Error('서버로부터 응답을 받지 못했습니다. 워크플로우가 완료되지 않았을 수 있습니다.');
+                }
+                
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    // JSON 파싱 실패 시 에러 처리
+                    throw new Error('서버 응답 형식이 올바르지 않습니다.');
+                }
+                
+                // HTTP 상태 코드 확인
+                if (!response.ok) {
+                    throw new Error(result.message || result.error || `서버 오류: ${response.status}`);
+                }
+                
+                // status가 'error'이면 실패로 처리
+                if (result.status === 'error') {
+                    throw new Error(result.message || '예약 처리 중 오류가 발생했습니다.');
+                }
+                
+                // status가 'success'일 때만 성공 처리
+                if (result.status === 'success') {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // 상세한 성공 메시지 생성
+                    const customerName = document.getElementById('name').value;
+                    const customerPhone = document.getElementById('phone').value;
+                    const customerEmail = document.getElementById('email').value;
+                    const selectedDate = document.getElementById('date').value;
+                    const selectedTimeValue = document.getElementById('selectedTime').value;
+                    const guestCount = document.getElementById('guests').value;
+                    
+                    // 지점 정보
+                    const branchNames = {
+                        'Ekamai': {ko: '에까마이 지점', th: 'สาขาเอกมัย', en: 'Ekamai Branch'},
+                        'Phrom Phong': {ko: '프롬퐁 지점', th: 'สาขาพร้อมพงษ์', en: 'Phrom Phong Branch'}
+                    };
+                    
+                    // 지점별 연락처 정보
+                    const branchContacts = {
+                        'Ekamai': {
+                            ko: {phone: '095-868-6826', address: 'BTS 에까마이역 4번 출구'},
+                            th: {phone: '095-868-6826', address: 'BTS เอกมัย ทางออก 4'},
+                            en: {phone: '095-868-6826', address: 'BTS Ekamai Exit 4'}
+                        },
+                        'Phrom Phong': {
+                            ko: {phone: '02-115-5500', address: '수쿰윗 소이 24'},
+                            th: {phone: '02-115-5500', address: 'สุขุมวิท ซอย 24'},
+                            en: {phone: '02-115-5500', address: 'Sukhumvit Soi 24'}
+                        }
+                    };
+                    
+                    // 공간 정보
+                    const spaceNames = {
+                        'Room 1': {ko: '1번룸', th: 'ห้องที่ 1', en: 'Room 1'},
+                        'Room 2': {ko: '2번룸', th: 'ห้องที่ 2', en: 'Room 2'},
+                        'General Table': {ko: '일반 테이블', th: 'โซนโต๊ะ', en: 'General Table'}
+                    };
+                    
+                    // reservationData에서 변수 가져오기
+                    const spaceTypeEn = reservationData.spaceType;
+                    const spaceDetailEn = reservationData.spaceDetail;
+                    const branchFromData = reservationData.branch || selectedBranch;
+                    
+                    const branchName = branchNames[branchFromData][currentLang];
+                    const branchContact = branchContacts[branchFromData][currentLang];
+                    
+                    const spaceName = spaceNames[spaceDetailEn] ? spaceNames[spaceDetailEn][currentLang] : reservationData.spaceDetail;
+                    
+                    // 날짜 포맷팅
+                    const dateObj = new Date(selectedDate);
+                    const formattedDate = {
+                        ko: dateObj.toLocaleDateString('ko-KR', {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}),
+                        th: dateObj.toLocaleDateString('th-TH', {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}),
+                        en: dateObj.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'})
+                    }[currentLang];
+                    
+                    // 예약금 금액 계산 (지점별)
+                    const depositAmount = spaceTypeEn === 'Room' ? getDepositAmount(branchFromData, spaceDetailEn) : null;
+                    const depositText = spaceTypeEn === 'Room' 
+                        ? (currentLang === 'ko' ? `\n• 예약금: ${depositAmount} THB (입금 완료 ✅)`
+                           : currentLang === 'th' ? `\n• ค่ามัดจำ: ${depositAmount} บาท (ชำระแล้ว ✅)`
+                           : `\n• Deposit: ${depositAmount} THB (Paid ✅)`)
+                        : '';
+                    
+                    const successMessages = {
+                        ko: `${customerName}님의 예약이 성공적으로 접수되었습니다! 🎉
+
+📋 예약 정보
+• 예약번호: ${result.bookingNumber}
+• 지점: ${branchName}
+• 날짜: ${formattedDate}
+• 시간: ${selectedTimeValue}
+• 공간: ${spaceName}
+• 인원: ${guestCount}명${depositText}
+
+📞 지점 연락처
+• 전화번호: ${branchContact.phone}
+• 주소: ${branchContact.address}
+
+📧 다음 단계
+관리자가 확인 후 최종 예약 확정 이메일을 발송해드립니다.
+
+문의사항이 있으시면 위 전화번호로 연락주세요.`,
+                        th: `การจองของคุณ${customerName} สำเร็จแล้ว! 🎉
+
+📋 ข้อมูลการจอง
+• เลขที่การจอง: ${result.bookingNumber}
+• สาขา: ${branchName}
+• วันที่: ${formattedDate}
+• เวลา: ${selectedTimeValue}
+• พื้นที่: ${spaceName}
+• จำนวน: ${guestCount} ท่าน${depositText}
+
+📞 ข้อมูลติดต่อสาขา
+• เบอร์โทร: ${branchContact.phone}
+• ที่อยู่: ${branchContact.address}
+
+📧 ขั้นตอนถัดไป
+ผู้จัดการจะตรวจสอบและส่งอีเมลยืนยันการจองขั้นสุดท้ายให้คุณ
+
+หากมีข้อสงสัย กรุณาโทรสอบถามเบอร์ข้างบน`,
+                        en: `${customerName}'s reservation submitted successfully! 🎉
+
+📋 Reservation Details
+• Booking Number: ${result.bookingNumber}
+• Branch: ${branchName}
+• Date: ${formattedDate}
+• Time: ${selectedTimeValue}
+• Space: ${spaceName}
+• Guests: ${guestCount}${depositText}
+
+📞 Branch Contact
+• Phone: ${branchContact.phone}
+• Address: ${branchContact.address}
+
+📧 Next Steps
+Manager will review and send final confirmation email.
+
+For inquiries, please call the number above.`
+                    };
+                    
+                    document.getElementById('booking-number').innerHTML = successMessages[currentLang];
+                } else {
+                    // status가 'success'가 아니면 에러 처리
+                    throw new Error(result.message || `예약 처리 실패: status=${result.status || 'unknown'}`);
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'none';  // 성공 메시지 숨김
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('reservationForm').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

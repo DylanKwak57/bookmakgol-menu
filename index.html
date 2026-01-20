@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북막골 메뉴 | Bookmakgol Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">북막골</div>
+            <div class="subtitle" id="subtitle">Menu</div>
+            
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="ko">한국어</button>
+                <button class="lang-btn" data-lang="th">ไทย</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+        </header>
+
+        <!-- Branch Selection -->
+        <section class="branch-section">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                <span id="branch-title">지점 선택</span>
+            </h2>
+            
+            <div class="branch-cards">
+                <button class="branch-card" data-branch="ekamai" type="button">
+                    <div class="branch-name" id="ekamai-name">에까마이 지점</div>
+                    <div class="branch-subtitle">Bookmakgol</div>
+                    <div class="branch-info" id="ekamai-info">BTS 에까마이역 4번 출구</div>
+                </button>
+                <button class="branch-card" data-branch="phromphong" type="button">
+                    <div class="branch-name" id="phrom-name">프롬퐁 지점</div>
+                    <div class="branch-subtitle">Bookmakgol Gourmet</div>
+                    <div class="branch-info" id="phrom-info">수쿰윗 소이 24</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Menu Container (Hidden until branch selected) -->
+        <section class="menu-section" id="menuSection" style="display: none;">
+            <!-- Category Navigation -->
+            <nav class="category-nav" id="categoryNav">
+                <div class="category-scroll">
+                    <!-- Categories will be populated by JS -->
+                </div>
+            </nav>
+
+            <!-- Menu Grid -->
+            <div class="menu-grid" id="menuGrid">
+                <!-- Menu items will be populated by JS -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2026 Bookmakgol. All rights reserved.</p>
+                <a href="https://dylankwak57.github.io/bookmakgol-reservation/" class="reservation-btn" id="reservationBtn">
+                    예약하기
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/menu.js"></script>
+</body>
+</html>

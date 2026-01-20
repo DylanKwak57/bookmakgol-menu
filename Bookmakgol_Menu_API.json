@@ -1,0 +1,224 @@
+{
+  "createdAt": "2026-01-20T07:00:00.000Z",
+  "updatedAt": "2026-01-20T07:00:00.000Z",
+  "id": "bookmakgolMenuApi",
+  "name": "Bookmakgol Menu API",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "bookmakgol-menu",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "bookmakgol-menu"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.query.branch }}",
+              "value2": "ekamai"
+            }
+          ]
+        }
+      },
+      "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+      "name": "IF Branch Check",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        470,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "2eea2fb1-c15d-8188-8bbb-c6049ae87693",
+        "returnAll": true,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Active|checkbox",
+              "condition": "equals",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+      "name": "Notion Ekamai Menu",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        690,
+        200
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "AU29qZb94H2pm2jL",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "2eea2fb1-c15d-810b-bfdf-d485e8eb7b1b",
+        "returnAll": true,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Active|checkbox",
+              "condition": "equals",
+              "checkboxValue": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d4e5f6a7-b8c9-0123-defa-456789012345",
+      "name": "Notion Phromphong Menu",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        690,
+        400
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "AU29qZb94H2pm2jL",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Notion 데이터를 메뉴판 형식으로 변환\nconst items = $input.all();\n\nconst menuData = items.map(item => {\n  const props = item.json.properties;\n  \n  // 이미지 URL 추출\n  let imageUrl = null;\n  if (props.Image && props.Image.files && props.Image.files.length > 0) {\n    const file = props.Image.files[0];\n    if (file.file && file.file.url) {\n      imageUrl = file.file.url;\n    } else if (file.external && file.external.url) {\n      imageUrl = file.external.url;\n    }\n  }\n  \n  return {\n    id: item.json.id,\n    name: props.Name && props.Name.title && props.Name.title[0] ? props.Name.title[0].plain_text : '',\n    name_ko: props.Name_KO && props.Name_KO.rich_text && props.Name_KO.rich_text[0] ? props.Name_KO.rich_text[0].plain_text : '',\n    name_th: props.Name_TH && props.Name_TH.rich_text && props.Name_TH.rich_text[0] ? props.Name_TH.rich_text[0].plain_text : '',\n    name_en: props.Name_EN && props.Name_EN.rich_text && props.Name_EN.rich_text[0] ? props.Name_EN.rich_text[0].plain_text : '',\n    category: props.Category && props.Category.select ? props.Category.select.name : '',\n    price: props.Price && props.Price.number ? props.Price.number : 0,\n    description: props.Description && props.Description.rich_text && props.Description.rich_text[0] ? props.Description.rich_text[0].plain_text : '',\n    image: imageUrl,\n    recommended: props.Recommended && props.Recommended.checkbox ? props.Recommended.checkbox : false,\n    active: props.Active && props.Active.checkbox ? props.Active.checkbox : false\n  };\n});\n\n// 카테고리별로 그룹화\nconst grouped = {};\nmenuData.forEach(item => {\n  const cat = item.category || 'Uncategorized';\n  if (!grouped[cat]) {\n    grouped[cat] = [];\n  }\n  grouped[cat].push(item);\n});\n\n// 카테고리 순서 정렬\nconst categoryOrder = [\n  '01. Special Recommendation',\n  '02. Set Menu',\n  '03. Appetizer',\n  '04. Salad',\n  '05. Soup & Jjigae',\n  '06. Noodles',\n  '07. Rice',\n  '08. Meat',\n  '09. Seafood',\n  '10. Grilled',\n  '11. Side Dish',\n  '12. Topping',\n  '13. Lunch',\n  '14. Beverage',\n  '15. Alcohol',\n  '16. Dessert'\n];\n\nconst sortedGrouped = {};\ncategoryOrder.forEach(cat => {\n  if (grouped[cat]) {\n    sortedGrouped[cat] = grouped[cat];\n  }\n});\n\n// 정렬되지 않은 카테고리 추가\nObject.keys(grouped).forEach(cat => {\n  if (!sortedGrouped[cat]) {\n    sortedGrouped[cat] = grouped[cat];\n  }\n});\n\nreturn [{\n  json: {\n    success: true,\n    count: menuData.length,\n    data: menuData,\n    grouped: sortedGrouped\n  }\n}];"
+      },
+      "id": "e5f6a7b8-c9d0-1234-efab-567890123456",
+      "name": "Code Transform Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        910,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f6a7b8c9-d0e1-2345-fabc-678901234567",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1130,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "IF Branch Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Branch Check": {
+      "main": [
+        [
+          {
+            "node": "Notion Ekamai Menu",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notion Phromphong Menu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Ekamai Menu": {
+      "main": [
+        [
+          {
+            "node": "Code Transform Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Phromphong Menu": {
+      "main": [
+        [
+          {
+            "node": "Code Transform Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Transform Data": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
