@@ -7,6 +7,7 @@
 | **프로젝트명** | Bookmakgol Online Menu |
 | **목적** | 북막골 레스토랑 온라인 메뉴판 |
 | **지점** | 에까마이 (대중화) / 프롬퐁 (프리미엄) |
+| **라이브 URL** | https://dylankwak57.github.io/bookmakgol-menu/ |
 | **참조 디자인** | https://www.shichi.co.th/starters |
 | **예약 시스템** | https://dylankwak57.github.io/bookmakgol-reservation/ |
 
@@ -73,45 +74,49 @@ bookmakgol_menu/
 
 ## 🗂️ 카테고리 목록
 
+> ⚠️ **노션 카테고리 번호 제거 완료** (2026-01-21)
+> 코드에서 `stripCategoryNumber()` 함수로 번호 있든 없든 자동 처리
+
 ### ⭐ 특별 카테고리 (상단 고정)
 
-| 번호 | 카테고리 | 아이콘 | 설명 |
-|------|---------|-------|------|
-| 01 | **Signature** | 🏆 | 시그니처 메뉴 |
-| 02 | **Recommended** | ⭐ | MUST TRY 추천 메뉴 |
-| 03 | **Popular** | 🔥 | BEST SELLER 인기 메뉴 |
+| 카테고리 | 아이콘 | 한국어 | 태국어 | 설명 |
+|---------|-------|-------|-------|------|
+| **Signature** | 🏆 | 시그니처 | ซิกเนเจอร์ | 대표 메뉴 |
+| **Recommended** | ⭐ | 추천 | แนะนำ | MUST TRY 추천 메뉴 |
+| **Popular** | 🔥 | 인기 | ยอดนิยม | BEST SELLER 인기 메뉴 |
 
-### 📋 일반 카테고리 (Phromphong 기준)
+### 📋 일반 카테고리 (Phromphong 기준, 18개)
 
-```
-04. Stew/Soup (찜/국/탕)
-05. Noodles (면류)
-06. Bibimbab/Fried Rice (비빔밥/볶음밥)
-07. Stir-Fried (볶음)
-08. Tteok (떡볶이)
-09. Korean Pancake (전)
-10. Kimbab (김밥)
-11. Salad (샐러드)
-12. Haemul Jang (해물장)
-13. Mandu (만두)
-14. SoyMilk Menu (콩물 메뉴)
-15. Side Dish (반찬)
-16. Topping (토핑)
-17. Beverage (음료)
-18. Alcohol (주류)
-```
+| 카테고리 | 한국어 | 태국어 |
+|---------|-------|-------|
+| Stew/Soup | 찜/국/탕 | ตุ๋น/ซุป |
+| Noodles | 면류 | เมนูเส้น |
+| Bibimbab/Fried Rice | 비빔밥/볶음밥 | ข้าวยำ/ข้าวผัด |
+| Stir-Fried | 볶음 | ผัด |
+| Tteok | 떡볶이 | ต๊อกบกกี |
+| Korean Pancake | 전 | แพนเค้ก |
+| Kimbab | 김밥 | คิมบับ |
+| Salad | 샐러드 | สลัด |
+| Haemul Jang | 해물장 | แฮมุลจัง |
+| Dumpling | 만두 | มันดู |
+| SoyMilk Menu | 콩물 메뉴 | เมนูน้ำเต้าหู้ |
+| Side Dish | 사이드 메뉴 | เมนูเคียง |
+| Topping | 토핑 | ท็อปปิ้ง |
+| Beverage | 음료 | เครื่องดื่ม |
+| Alcohol | 주류 | เครื่องดื่มแอลกอฮอล์ |
 
 ---
 
 ## 🔗 n8n API 연동
 
 ### API 엔드포인트
-- **Phromphong:** `https://dylan-n8n.bookmakgol.co/webhook/bookmakgol-menu-phromphong`
-- **Ekamai:** `https://dylan-n8n.bookmakgol.co/webhook/bookmakgol-menu-ekamai`
+- **통합 API:** `https://dylan-automation.app.n8n.cloud/webhook/bookmakgol-menu`
+- **지점 파라미터:** `?branch=phromphong` 또는 `?branch=ekamai`
 
 ### 워크플로우: Bookmakgol Menu API
 - **위치:** n8n Cloud
 - **기능:** 노션 데이터베이스 실시간 조회 및 JSON 변환
+- **지점 분기:** IF 노드로 branch 파라미터 체크 후 해당 DB 조회
 
 ### API 응답 형식
 ```json
@@ -193,9 +198,10 @@ bookmakgol_menu/
 - [x] 예약 페이지 링크
 
 ### 미래 개선사항 ⏳
-- [ ] GitHub Pages 배포
+- [x] GitHub Pages 배포 ✅
 - [ ] 이미지 로딩 최적화 (lazy loading)
 - [ ] 검색 기능
+- [ ] 에까마이 지점 노션 데이터 추가
 
 ---
 
@@ -224,18 +230,17 @@ bookmakgol_menu/
 
 ### 메뉴 추가하기
 
-1. **Name:** 대표 메뉴명 입력
-2. **Name_KO:** 한국어 이름
-3. **Name_TH:** 태국어 이름
-4. **Name_EN:** 영어 이름
-5. **Category:** 카테고리 선택
-   - `01. Signature` → 시그니처 메뉴
-   - `02. Recommended` → 추천 메뉴 (MUST TRY)
-   - `03. Popular` → 인기 메뉴 (BEST SELLER)
-   - `04. Stew/Soup` ~ → 일반 카테고리
-6. **Price:** 가격 (숫자만)
-7. **Image:** 메뉴판 이미지 업로드 (여러 개 가능)
-8. **Active:** 표시하려면 체크 ✅
+1. **Name:** 대표 메뉴명 입력 (필수)
+2. **Category:** 카테고리 선택 (필수)
+   - `Signature` → 시그니처 메뉴
+   - `Recommended` → 추천 메뉴 (MUST TRY)
+   - `Popular` → 인기 메뉴 (BEST SELLER)
+   - `Stew/Soup` ~ → 일반 카테고리
+3. **Image:** 메뉴판 이미지 업로드 (필수, 여러 개 가능)
+4. **Active:** 표시하려면 체크 ✅ (필수)
+
+> 💡 **선택 필드:** Name_KO, Name_TH, Name_EN, Price, Description
+> 이미지 기반 메뉴판이므로 이름/가격 필드는 선택사항
 
 ### 이미지 업로드 팁
 - **파일명:** `page_XX.jpg` 형식 권장 (정렬용)
@@ -262,6 +267,15 @@ bookmakgol_menu/
 | 2026-01-21 | "전체" 카테고리 제거 |
 | 2026-01-21 | 특별 카테고리 버튼 스타일링 |
 | 2026-01-21 | **지점 선택 시 시그니처 탭 기본 표시** |
+| 2026-01-21 | 카테고리 번호 제거 대응 (`stripCategoryNumber()`) |
+| 2026-01-21 | 카테고리 고정 순서 정렬 추가 |
+| 2026-01-21 | Side Dish 번역 수정 (반찬 → 사이드 메뉴) |
+| 2026-01-21 | Noodles 태국어 수정 (เส้น → เมนูเส้น) |
+| 2026-01-21 | 지점 선택 섹션 "1" 번호 제거 |
+| 2026-01-21 | **GitHub Pages 배포** |
+| 2026-01-21 | JS 캐시 버스팅 추가 (`?v=3`) |
+| 2026-01-21 | n8n 워크플로우 통합 (branch 파라미터) |
+| 2026-01-21 | 에까마이 노션 DB Category 필드 재설정 (번호 제거) |
 
 ---
 
