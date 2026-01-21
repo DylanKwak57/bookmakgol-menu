@@ -22,7 +22,7 @@
 ### Phromphong (프롬퐁) - Bookmakgol Gourmet
 - **컨셉:** 프리미엄 메뉴
 - **위치:** 수쿰윗 소이 24
-- **카테고리:** 16개 (Topping 포함)
+- **카테고리:** 18개 (특별 카테고리 포함)
 
 ---
 
@@ -35,11 +35,12 @@ bookmakgol_menu/
 │   └── style.css           # 스타일 (북막골 디자인 시스템)
 ├── js/
 │   └── menu.js             # 메뉴 데이터 & 기능
-├── images/                 # 메뉴 이미지 (추후 추가)
-│   ├── phromphong/
-│   └── ekamai/
+├── images/
+│   └── pages_web/          # 메뉴 이미지 (로컬 백업용)
+│       └── page_01~28.jpg
 ├── PROJECT_README.md       # 이 문서
-└── bookmakgol_reservation_index.html  # 예약 시스템 참조
+├── MENU_SUMMARY.md         # 메뉴 요약
+└── Bookmakgol_Menu_API.json # n8n 워크플로우 백업
 ```
 
 ---
@@ -65,86 +66,87 @@ bookmakgol_menu/
 | **Category** | Select | 카테고리 |
 | **Price** | Number | 가격 (숫자만) |
 | **Description** | Text | 메뉴 설명 |
-| **Image** | Files | 메뉴 이미지 |
-| **Recommended** | Checkbox | ⭐ 추천 메뉴 |
+| **Image** | Files | 메뉴 이미지 (여러 개 가능) |
 | **Active** | Checkbox | 메뉴판 표시 여부 |
 
 ---
 
 ## 🗂️ 카테고리 목록
 
-### Ekamai (15개)
-```
-01. Special Recommendation (추천 메뉴)
-02. Set Menu (세트 메뉴)
-03. Appetizer (전채)
-04. Salad (샐러드)
-05. Soup & Jjigae (국/찌개)
-06. Noodles (면류)
-07. Rice (밥류)
-08. Meat (육류)
-09. Seafood (해산물)
-10. Grilled (구이류)
-11. Side Dish (반찬)
-12. Lunch (점심 메뉴)
-13. Beverage (음료)
-14. Alcohol (주류)
-15. Dessert (디저트)
-```
+### ⭐ 특별 카테고리 (상단 고정)
 
-### Phromphong (16개)
+| 번호 | 카테고리 | 아이콘 | 설명 |
+|------|---------|-------|------|
+| 01 | **Signature** | 🏆 | 시그니처 메뉴 |
+| 02 | **Recommended** | ⭐ | MUST TRY 추천 메뉴 |
+| 03 | **Popular** | 🔥 | BEST SELLER 인기 메뉴 |
+
+### 📋 일반 카테고리 (Phromphong 기준)
+
 ```
-01. Special Recommendation (추천 메뉴)
-02. Set Menu (세트 메뉴)
-03. Appetizer (전채)
-04. Salad (샐러드)
-05. Soup & Jjigae (국/찌개)
-06. Noodles (면류)
-07. Rice (밥류)
-08. Meat (육류)
-09. Seafood (해산물)
-10. Grilled (구이류)
-11. Side Dish (반찬)
-12. Topping (토핑) ← 프롬퐁만!
-13. Lunch (점심 메뉴)
-14. Beverage (음료)
-15. Alcohol (주류)
-16. Dessert (디저트)
+04. Stew/Soup (찜/국/탕)
+05. Noodles (면류)
+06. Bibimbab/Fried Rice (비빔밥/볶음밥)
+07. Stir-Fried (볶음)
+08. Tteok (떡볶이)
+09. Korean Pancake (전)
+10. Kimbab (김밥)
+11. Salad (샐러드)
+12. Haemul Jang (해물장)
+13. Mandu (만두)
+14. SoyMilk Menu (콩물 메뉴)
+15. Side Dish (반찬)
+16. Topping (토핑)
+17. Beverage (음료)
+18. Alcohol (주류)
 ```
 
 ---
 
-## 📸 구글 드라이브 이미지 폴더
+## 🔗 n8n API 연동
 
-**메인 폴더:** https://drive.google.com/drive/folders/1pQuMZjXGG80i7aMD0l8ZPFfxRI3gMrY7
+### API 엔드포인트
+- **Phromphong:** `https://dylan-n8n.bookmakgol.co/webhook/bookmakgol-menu-phromphong`
+- **Ekamai:** `https://dylan-n8n.bookmakgol.co/webhook/bookmakgol-menu-ekamai`
 
-### 폴더 구조
+### 워크플로우: Bookmakgol Menu API
+- **위치:** n8n Cloud
+- **기능:** 노션 데이터베이스 실시간 조회 및 JSON 변환
+
+### API 응답 형식
+```json
+{
+  "success": true,
+  "count": 50,
+  "data": [
+    {
+      "id": "page-id",
+      "name": "불고기",
+      "name_ko": "불고기",
+      "name_th": "บุลโกกิ",
+      "name_en": "Bulgogi",
+      "category": "01. Signature",
+      "price": 350,
+      "description": "...",
+      "image": "https://...",
+      "images": ["https://...", "https://..."],
+      "active": true
+    }
+  ],
+  "grouped": { ... }
+}
 ```
-Bookmakgol Menu Pic/
-├── Phromphong (Bookmagol Gourmet)/
-│   ├── 01. Special Recommendation/
-│   ├── 02. Set Menu/
-│   ├── ... (16개 카테고리)
-│   └── 16. Dessert/
-│
-└── Ekamai (Bookmagol)/
-    ├── 01. Special Recommendation/
-    ├── 02. Set Menu/
-    ├── ... (15개 카테고리, Topping 제외)
-    └── 15. Dessert/
-```
 
-### 이미지 업로드 가이드
-- **파일명:** 영문 또는 숫자 (예: bulgogi.jpg, menu_01.png)
-- **형식:** JPG, PNG, WebP
-- **권장 크기:** 800x800px 이상
-- **용량:** 2MB 이하 권장
+### 이미지 처리
+- **노션 이미지 URL:** 임시 URL (만료됨) → API 호출 시 항상 최신 URL 반환
+- **여러 이미지 지원:** `images` 배열로 한 카테고리에 여러 이미지 표시
+- **페이지 번호 정렬:** URL에서 `page_XX` 추출하여 순서대로 표시
 
 ---
 
 ## 🎨 디자인 시스템
 
-### 색상 팔레트 (북막골 예약 시스템 기반)
+### 색상 팔레트
 ```css
 :root {
     /* 배경 */
@@ -159,13 +161,18 @@ Bookmakgol Menu Pic/
     --btn-primary: #4a4a4a;
     --btn-hover: #3a3a3a;
     
-    /* 보더 */
-    --border-light: #d0d0d0;
+    /* 특별 카테고리 버튼 */
+    --special-btn-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 }
 ```
 
 ### 폰트
 - **메인:** Noto Sans KR (Google Fonts)
+
+### 특별 카테고리 버튼 스타일
+- **배경:** 오렌지 그라데이션
+- **활성화:** 진한 오렌지
+- **구분선:** `|` 로 일반 카테고리와 구분
 
 ---
 
@@ -173,68 +180,67 @@ Bookmakgol Menu Pic/
 
 ### 구현 완료 ✅
 - [x] 지점 선택 (에까마이/프롬퐁)
-- [x] 카테고리 탭 (가로 스크롤)
-- [x] 메뉴 카드 (2열 그리드) - 이미지 있는 메뉴
-- [x] 메뉴 리스트 (1열) - 이미지 없는 메뉴
+- [x] **시그니처 탭 기본 표시** (지점 선택 시 자동)
+- [x] 특별 카테고리 탭 (시그니처/추천/인기)
+- [x] 카테고리 탭 (가로 스크롤, 구분선 포함)
+- [x] 하이브리드 모드 (이미지 갤러리 + 카드)
+- [x] 노션 이미지 실시간 표시
+- [x] 여러 이미지 지원 (한 카테고리에 다수 이미지)
+- [x] 이미지 페이지 번호순 정렬
+- [x] 전체화면 이미지 모달
 - [x] 다국어 지원 (한국어/태국어/영어)
 - [x] 반응형 디자인
 - [x] 예약 페이지 링크
 
-### 구현 예정 ⏳
-- [ ] Notion API 연동 (실시간 메뉴 데이터)
-- [ ] 이미지 로딩 최적화
+### 미래 개선사항 ⏳
 - [ ] GitHub Pages 배포
+- [ ] 이미지 로딩 최적화 (lazy loading)
+- [ ] 검색 기능
 
 ---
 
-## 🔗 연동 구조
+## 📊 UX 흐름
 
 ```
-┌─────────────────┐         ┌─────────────────┐
-│   Notion DB     │  ──→    │   메뉴판        │
-│  (메뉴 관리)     │  API    │  (자동 업데이트) │
-└─────────────────┘         └─────────────────┘
-         │
-         │ 이미지 링크
-         ↓
-┌─────────────────┐
-│  Google Drive   │
-│  (이미지 저장)   │
-└─────────────────┘
+1. 메뉴판 접속
+   ↓
+2. 지점 선택 (에까마이 / 프롬퐁)
+   ↓
+3. 🏆 시그니처 탭 자동 표시 (기본값)
+   ↓
+4. 특별 탭 선택 가능:
+   - 🏆 시그니처: 대표 메뉴
+   - ⭐ 추천: MUST TRY 메뉴
+   - 🔥 인기: BEST SELLER 메뉴
+   ↓
+5. 일반 카테고리 탭 선택
+   ↓
+6. 이미지 갤러리 + 메뉴 정보 표시
 ```
 
 ---
 
-## 📝 메뉴 입력 가이드 (북막골 담당자용)
+## 📝 노션 관리 가이드
 
-### Notion에서 메뉴 추가하기
+### 메뉴 추가하기
 
-1. **Name:** 대표 메뉴명 입력 (예: 불고기)
-2. **Name_KO:** 한국어 이름 (예: 불고기)
-3. **Name_TH:** 태국어 이름 (예: บุลโกกิ)
-4. **Name_EN:** 영어 이름 (예: Bulgogi)
+1. **Name:** 대표 메뉴명 입력
+2. **Name_KO:** 한국어 이름
+3. **Name_TH:** 태국어 이름
+4. **Name_EN:** 영어 이름
 5. **Category:** 카테고리 선택
-6. **Price:** 가격 (숫자만, 예: 350)
-7. **Description:** 메뉴 설명 (선택사항)
-8. **Image:** 이미지 업로드 또는 링크
-9. **Recommended:** 추천 메뉴면 체크 ⭐
-10. **Active:** 메뉴판에 표시하려면 체크 ✅
+   - `01. Signature` → 시그니처 메뉴
+   - `02. Recommended` → 추천 메뉴 (MUST TRY)
+   - `03. Popular` → 인기 메뉴 (BEST SELLER)
+   - `04. Stew/Soup` ~ → 일반 카테고리
+6. **Price:** 가격 (숫자만)
+7. **Image:** 메뉴판 이미지 업로드 (여러 개 가능)
+8. **Active:** 표시하려면 체크 ✅
 
-### 이미지 없는 메뉴
-- Image 필드를 **비워두면** 자동으로 리스트형으로 표시됩니다.
-- 토핑, 음료, 사이드 등에 적합
-
----
-
-## 🚀 배포 계획
-
-1. **개발 환경:** 로컬 (file://)
-2. **테스트:** GitHub Pages (테스트 브랜치)
-3. **운영:** GitHub Pages (main 브랜치)
-
-### 예상 URL
-- 메뉴판: `https://dylankwak57.github.io/bookmakgol-menu/`
-- 예약: `https://dylankwak57.github.io/bookmakgol-reservation/`
+### 이미지 업로드 팁
+- **파일명:** `page_XX.jpg` 형식 권장 (정렬용)
+- **한 카테고리에 여러 이미지:** 같은 카테고리 항목에 여러 이미지 첨부
+- **자동 정렬:** 파일명의 숫자로 순서 결정
 
 ---
 
@@ -247,6 +253,15 @@ Bookmakgol Menu Pic/
 | 2026-01-20 | 메뉴판 기본 HTML/CSS/JS 구현 |
 | 2026-01-20 | 혼합 레이아웃 (카드형 + 리스트형) 구현 |
 | 2026-01-20 | Notion DB 2개 생성 (Ekamai/Phromphong) |
+| 2026-01-21 | n8n API 워크플로우 생성 |
+| 2026-01-21 | 노션 실시간 메뉴 데이터 연동 |
+| 2026-01-21 | 노션 이미지 실시간 표시 구현 |
+| 2026-01-21 | 여러 이미지 지원 (images 배열) |
+| 2026-01-21 | 이미지 페이지 번호순 정렬 |
+| 2026-01-21 | 특별 카테고리 추가 (시그니처/추천/인기) |
+| 2026-01-21 | "전체" 카테고리 제거 |
+| 2026-01-21 | 특별 카테고리 버튼 스타일링 |
+| 2026-01-21 | **지점 선택 시 시그니처 탭 기본 표시** |
 
 ---
 
@@ -262,4 +277,4 @@ Bookmakgol Menu Pic/
 - [Shichi 메뉴 (참조 디자인)](https://www.shichi.co.th/starters)
 - [북막골 예약 시스템](https://dylankwak57.github.io/bookmakgol-reservation/)
 - [Notion API 문서](https://developers.notion.com/)
-- [Google Drive API 문서](https://developers.google.com/drive/api)
+- [n8n 문서](https://docs.n8n.io/)
