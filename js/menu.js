@@ -385,15 +385,17 @@ function processAPIData(result) {
         return (orderA === -1 ? 999 : orderA) - (orderB === -1 ? 999 : orderB);
     });
     
-    // 이미지가 없는 카테고리 필터링 (노션에 이미지가 없으면 숨김)
+    // 이미지가 없는 카테고리 필터링 (노션에 카테고리 대표 이미지가 없으면 숨김)
     categoryList = categoryList.filter(cat => {
         const items = menuData[cat.id] || [];
-        // 카테고리에 이미지가 있는 아이템이 하나라도 있는지 확인
-        const hasImageItem = items.some(item => item.image || (item.images && item.images.length > 0));
-        if (!hasImageItem) {
-            console.log(`카테고리 숨김 (이미지 없음): ${cat.ko}`);
+        // 카테고리 대표 이미지 (isCategory: true)가 있는지 확인
+        const hasCategoryImage = items.some(item => 
+            item.isCategory && (item.image || (item.images && item.images.length > 0))
+        );
+        if (!hasCategoryImage) {
+            console.log(`카테고리 숨김 (대표 이미지 없음): ${cat.ko}`);
         }
-        return hasImageItem;
+        return hasCategoryImage;
     });
 }
 
