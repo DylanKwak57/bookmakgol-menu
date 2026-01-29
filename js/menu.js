@@ -436,6 +436,7 @@ function renderCategories() {
     // 특별 카테고리 탭 아이콘
     const specialIcons = {
         'signature': '🏆',
+        'newmenu': '🆕',
         'recommended': '⭐',
         'popular': '🔥'
     };
@@ -443,7 +444,7 @@ function renderCategories() {
     let html = '';
     
     // 특별 카테고리 버튼 (데이터에 있는 것만 표시)
-    const specialCategoryIds = ['signature', 'recommended', 'popular'];
+    const specialCategoryIds = ['signature', 'newmenu', 'recommended', 'popular'];
     specialCategoryIds.forEach(specialId => {
         const cat = categoryList.find(c => c.id === specialId);
         if (cat) {
