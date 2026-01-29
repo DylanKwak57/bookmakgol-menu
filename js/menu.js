@@ -358,6 +358,7 @@ function processAPIData(result) {
     // 카테고리 정렬 (고정된 순서)
     const categoryOrder = [
         'signature',      // 시그니처
+        'newmenu',        // 신메뉴
         'recommended',    // 추천
         'popular',        // 인기
         'stew',           // 찜/국/탕
