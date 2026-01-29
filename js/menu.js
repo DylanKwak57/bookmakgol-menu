@@ -90,7 +90,7 @@ const categoryMappingByBranch = {
         'Noodles': { id: 'noodles', ko: '면류', th: 'เมนูเส้น', en: 'Noodles' },
         'Bibimbab/Fried Rice': { id: 'rice', ko: '비빔밥/볶음밥', th: 'ข้าวยำ/ข้าวผัด', en: 'Bibimbab/Fried Rice' },
         'Stir-Fried': { id: 'stirfried', ko: '볶음', th: 'ผัด', en: 'Stir-Fried' },
-        'Tteok': { id: 'tteok', ko: '떡볶이', th: 'ต๊อกบกกี', en: 'Tteok' },
+        'Tteok': { id: 'tteok', ko: '떡류', th: 'ต็อก (เค้กข้าว)', en: 'Rice Cake Dishes' },
         'Korean Pancake': { id: 'pancake', ko: '전', th: 'แพนเค้กเกาหลี', en: 'Korean Pancake' },
         'Kimbab': { id: 'kimbab', ko: '김밥', th: 'คิมบับ', en: 'Kimbab' },
         'Salad': { id: 'salad', ko: '샐러드', th: 'สลัด', en: 'Salad' },
@@ -111,7 +111,7 @@ const categoryMappingByBranch = {
         'Noodles': { id: 'noodles', ko: '면류', th: 'เมนูเส้น', en: 'Noodles' },
         'Bibimbab/Fried Rice': { id: 'rice', ko: '비빔밥/볶음밥', th: 'ข้าวยำ/ข้าวผัด', en: 'Bibimbab/Fried Rice' },
         'Stir-Fried': { id: 'stirfried', ko: '볶음', th: 'ผัด', en: 'Stir-Fried' },
-        'Tteok': { id: 'tteok', ko: '떡볶이', th: 'ต๊อกบกกี', en: 'Tteok' },
+        'Tteok': { id: 'tteok', ko: '떡류', th: 'ต็อก (เค้กข้าว)', en: 'Rice Cake Dishes' },
         'Korean Pancake': { id: 'pancake', ko: '전', th: 'แพนเค้กเกาหลี', en: 'Korean Pancake' },
         'Kimbab': { id: 'kimbab', ko: '김밥', th: 'คิมบับ', en: 'Kimbab' },
         'Salad': { id: 'salad', ko: '샐러드', th: 'สลัด', en: 'Salad' },
@@ -150,7 +150,7 @@ const categoryPageMapping = {
         noodles: { pages: [13, 14], title: { ko: '면류', th: 'เมนูเส้น', en: 'Noodles' } },
         rice: { pages: [12], title: { ko: '비빔밥/볶음밥', th: 'ข้าวยำ/ข้าวผัด', en: 'Bibimbab/Fried Rice' } },
         stirfried: { pages: [5, 6, 8], title: { ko: '볶음', th: 'ผัด', en: 'Stir-Fried' } },
-        tteok: { pages: [15, 16], title: { ko: '떡볶이', th: 'ต๊อกบกกี', en: 'Tteok' } },
+        tteok: { pages: [15, 16], title: { ko: '떡류', th: 'ต็อก (เค้กข้าว)', en: 'Rice Cake Dishes' } },
         pancake: { pages: [19], title: { ko: '전', th: 'แพนเค้กเกาหลี', en: 'Korean Pancake' } },
         kimbab: { pages: [21, 22], title: { ko: '김밥', th: 'คิมบับ', en: 'Kimbab' } },
         salad: { pages: [26], title: { ko: '샐러드', th: 'สลัด', en: 'Salad' } },
@@ -363,7 +363,7 @@ function processAPIData(result) {
         'noodles',        // 면류
         'rice',           // 비빔밥/볶음밥
         'stirfried',      // 볶음
-        'tteok',          // 떡볶이
+        'tteok',          // 떡류
         'pancake',        // 전
         'kimbab',         // 김밥
         'salad',          // 샐러드
