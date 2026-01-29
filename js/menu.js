@@ -102,9 +102,10 @@ const categoryMappingByBranch = {
         'Beverage': { id: 'beverage', ko: '음료', th: 'เครื่องดื่ม', en: 'Beverage' },
         'Alcohol': { id: 'alcohol', ko: '주류', th: 'เครื่องดื่มแอลกอฮอล์', en: 'Alcohol' }
     },
-    // 에까마이: 17개 (추천, 인기 포함, 토핑 없음)
+    // 에까마이: 18개 (추천, 인기, 신메뉴 포함, 토핑 없음)
     ekamai: {
         'Signature': { id: 'signature', ko: '시그니처', th: 'ซิกเนเจอร์', en: 'Signature', special: true },
+        'New Menu': { id: 'newmenu', ko: '신메뉴', th: 'เมนูใหม่', en: 'New Menu', special: true },
         'Recommended': { id: 'recommended', ko: '추천', th: 'แนะนำ', en: 'Recommended', special: true },
         'Popular': { id: 'popular', ko: '인기', th: 'ยอดนิยม', en: 'Popular', special: true },
         'Stew/Soup': { id: 'stew', ko: '찜/국/탕', th: 'ตุ๋น/ซุป', en: 'Stew/Soup' },
